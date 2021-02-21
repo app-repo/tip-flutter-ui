@@ -96,14 +96,16 @@ class _TipSwitchTextState extends State<TipSwitchText> {
     return new PageView(
       scrollDirection: widget.scrollDirection,
       controller: _controller,
-      children: widget.data.map((text) {
+      children: widget.data.asMap().entries.map((entry) {
         return new TipColorText(
-          text,
+          entry.value,
           textAlign: widget.textAlign,
           overflow: widget.overflow,
           style: widget.style,
           maxLines: widget.maxLines,
-          onTap: widget.onTap,
+          onTap: () {
+           if(widget.onTap != null) widget.onTap(entry.key);
+          },
         );
       }).toList(),
     );

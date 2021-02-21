@@ -57,7 +57,7 @@ class TipColorText extends StatefulWidget {
   /// See [TextWidthBasis] for possible values and their implications.
   final TextWidthBasis textWidthBasis;
 
-  final Function(int) onTap;
+  final Function() onTap;
 }
 
 class _TipColorTextState extends State<TipColorText> {
@@ -74,14 +74,10 @@ class _TipColorTextState extends State<TipColorText> {
     );
   }
 
-  List<TextSpan> _buildTextSpans(String data, Function(int) cb) {
+  List<TextSpan> _buildTextSpans(String data, Function() cb) {
     List<TextItem> texts = parse(data);
     int i = 0;
-    return texts.map((item) {
-      TextSpan w = _buildTextSpan(item, i, cb);
-      i++;
-      return w;
-    }).toList();
+    return texts.map((item) => _buildTextSpan(item, cb)).toList();
   }
 
   List<TextItem> parse(String data) {
@@ -99,15 +95,13 @@ class _TipColorTextState extends State<TipColorText> {
     return items;
   }
 
-  TextSpan _buildTextSpan(TextItem textItem, int i, Function(int) cb) {
+  TextSpan _buildTextSpan(TextItem textItem, Function() cb) {
     return TextSpan(
         text: textItem.content,
         style: widget.style.copyWith(color: textItem.color),
         // 设置点击事件
         recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            if(cb != null) cb(i);
-          },
+          ..onTap = cb ?? () {},
     );
   }
 }
