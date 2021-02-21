@@ -26,12 +26,10 @@ class TipMarqueeWidget extends StatefulWidget {
         );
 
   @override
-  State<StatefulWidget> createState() {
-    return new MarqueeWidgetState();
-  }
+  State<StatefulWidget> createState() =>  _MarqueeWidgetState();
 }
 
-class MarqueeWidgetState extends State<TipMarqueeWidget>
+class _MarqueeWidgetState extends State<TipMarqueeWidget>
     with SingleTickerProviderStateMixin {
   ScrollController scrollController;
   double screenWidth;

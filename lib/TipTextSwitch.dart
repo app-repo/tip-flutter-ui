@@ -8,7 +8,7 @@ class TipSwitchText extends StatefulWidget {
     this.data, {
     Key key,
     this.timerRest = 1500,
-    this.timerAnimate = 700,
+    this.timerAnimate = 500,
     this.curveAnimate = Curves.easeOut,
     this.scrollDirection = Axis.horizontal,
     this.style = const TextStyle(),
