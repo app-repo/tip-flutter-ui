@@ -8,6 +8,8 @@ class TipSwitchText extends StatefulWidget {
     this.data, {
     Key key,
     this.timerRest = 1500,
+    this.timerAnimate = 700,
+    this.curveAnimate = Curves.easeOut,
     this.scrollDirection = Axis.horizontal,
     this.style = const TextStyle(),
     this.textAlign,
@@ -15,6 +17,7 @@ class TipSwitchText extends StatefulWidget {
     this.overflow,
     this.maxLines,
     this.textWidthBasis,
+    this.onTap,
   })  : assert(
           data != null,
           'A non-null String must be provided to a Text widget.',
@@ -30,6 +33,8 @@ class TipSwitchText extends StatefulWidget {
   final List<String> data;
 
   final int timerRest;
+  final int timerAnimate;
+  final Curve curveAnimate;
 
   /// The axis along which the page view scrolls.
   ///
@@ -64,6 +69,8 @@ class TipSwitchText extends StatefulWidget {
   /// The strategy to use when calculating the width of the Text.
   /// See [TextWidthBasis] for possible values and their implications.
   final TextWidthBasis textWidthBasis;
+
+  final Function(int) onTap;
 }
 
 class _TipSwitchTextState extends State<TipSwitchText> {
@@ -72,7 +79,6 @@ class _TipSwitchTextState extends State<TipSwitchText> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       startTimer();
@@ -81,7 +87,6 @@ class _TipSwitchTextState extends State<TipSwitchText> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     timer.cancel();
   }
@@ -98,14 +103,15 @@ class _TipSwitchTextState extends State<TipSwitchText> {
           overflow: widget.overflow,
           style: widget.style,
           maxLines: widget.maxLines,
+          onTap: widget.onTap,
         );
       }).toList(),
     );
   }
 
   void _animate() {
-    Duration duration = Duration(milliseconds: (widget.timerRest / 2).ceil());
-    Curve curve = Curves.easeOut;
+    Duration duration = Duration(milliseconds: (widget.timerAnimate).ceil());
+    Curve curve = widget.curveAnimate ?? Curves.easeOut;
     if (_controller.page == widget.data.length - 1) {
       _controller.jumpToPage(0);
     } else {

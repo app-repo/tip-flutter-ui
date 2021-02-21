@@ -57,7 +57,7 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
     double widgetHeight =
         _key.currentContext.findRenderObject().paintBounds.size.height;
 
-    timer = Timer.periodic(new Duration(milliseconds: _timerRest), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: _timerRest), (timer) {
       double maxScrollExtent = scrollController.position.maxScrollExtent;
       double pixels = scrollController.position.pixels;
       if (pixels + _moveDistance >= maxScrollExtent) {
@@ -83,7 +83,7 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
       }
       position += _moveDistance;
       scrollController.animateTo(position,
-          duration: new Duration(milliseconds: _timerRest),
+          duration: Duration(milliseconds: _timerRest),
           curve: Curves.linear);
     });
   }
@@ -98,7 +98,7 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
   List<Widget> getBothEndsChild() {
     if (widget.scrollAxis == Axis.vertical) {
       return widget.text.split(TipMarqueeWidget.Sep).map((item) {
-        return new TipColorText(
+        return TipColorText(
           item,
           style: widget.textStyle,
         );
@@ -106,7 +106,7 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
     }
     return [
       new Center(
-          child: new TipColorText(
+          child: TipColorText(
         widget.text,
         style: widget.textStyle,
       ))
@@ -115,9 +115,9 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
 
   Widget getCenterChild() {
     if (widget.scrollAxis == Axis.horizontal) {
-      return new Container(width: screenWidth * widget.ratioOfBlankToScreen);
+      return Container(width: screenWidth * widget.ratioOfBlankToScreen);
     } else {
-      return new Container(height: screenHeight * widget.ratioOfBlankToScreen);
+      return Container(height: screenHeight * widget.ratioOfBlankToScreen);
     }
   }
 
@@ -129,11 +129,11 @@ class MarqueeWidgetState extends State<TipMarqueeWidget>
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(
+    return ListView(
       key: _key,
       scrollDirection: widget.scrollAxis,
       controller: scrollController,
-      physics: new NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         ...getBothEndsChild(),
         getCenterChild(),

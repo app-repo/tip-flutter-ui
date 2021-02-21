@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
+import 'package:flutter/gestures.dart';
 
 class TipColorText extends StatefulWidget {
   const TipColorText(
@@ -12,6 +13,7 @@ class TipColorText extends StatefulWidget {
     this.overflow,
     this.maxLines,
     this.textWidthBasis,
+    this.onTap,
   })  : assert(
           data != null,
           'A non-null String must be provided to a Text widget.',
@@ -54,6 +56,8 @@ class TipColorText extends StatefulWidget {
   /// The strategy to use when calculating the width of the Text.
   /// See [TextWidthBasis] for possible values and their implications.
   final TextWidthBasis textWidthBasis;
+
+  final Function(int) onTap;
 }
 
 class _TipColorTextState extends State<TipColorText> {
@@ -61,7 +65,7 @@ class _TipColorTextState extends State<TipColorText> {
   Widget build(BuildContext context) {
     return Text.rich(
       TextSpan(
-        children: _buildTextSpans(widget.data),
+        children: _buildTextSpans(widget.data, widget.onTap),
       ),
       style: widget.style,
       maxLines: widget.maxLines,
@@ -70,9 +74,14 @@ class _TipColorTextState extends State<TipColorText> {
     );
   }
 
-  List<TextSpan> _buildTextSpans(String data) {
+  List<TextSpan> _buildTextSpans(String data, Function(int) cb) {
     List<TextItem> texts = parse(data);
-    return texts.map((item) => _buildTextSpan(item)).toList();
+    int i = 0;
+    return texts.map((item) {
+      TextSpan w = _buildTextSpan(item, i, cb);
+      i++;
+      return w;
+    }).toList();
   }
 
   List<TextItem> parse(String data) {
@@ -90,10 +99,16 @@ class _TipColorTextState extends State<TipColorText> {
     return items;
   }
 
-  TextSpan _buildTextSpan(TextItem textItem) {
+  TextSpan _buildTextSpan(TextItem textItem, int i, Function(int) cb) {
     return TextSpan(
         text: textItem.content,
-        style: widget.style.copyWith(color: textItem.color));
+        style: widget.style.copyWith(color: textItem.color),
+        // 设置点击事件
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            if(cb != null) cb(i);
+          },
+    );
   }
 }
 
