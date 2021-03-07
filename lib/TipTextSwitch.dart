@@ -18,6 +18,7 @@ class TipSwitchText extends StatefulWidget {
     this.maxLines,
     this.textWidthBasis,
     this.onTap,
+    this.formatter,
   })  : assert(
           data != null,
           'A non-null String must be provided to a Text widget.',
@@ -71,6 +72,7 @@ class TipSwitchText extends StatefulWidget {
   final TextWidthBasis textWidthBasis;
 
   final Function(int) onTap;
+  final Function(String) formatter;
 }
 
 class _TipSwitchTextState extends State<TipSwitchText> {
@@ -106,6 +108,7 @@ class _TipSwitchTextState extends State<TipSwitchText> {
           onTap: () {
            if(widget.onTap != null) widget.onTap(entry.key);
           },
+          formatter: widget.formatter,
         );
       }).toList(),
     );

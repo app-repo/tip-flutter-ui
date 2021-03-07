@@ -14,6 +14,7 @@ class TipColorText extends StatefulWidget {
     this.maxLines,
     this.textWidthBasis,
     this.onTap,
+    this.formatter,
   })  : assert(
           data != null,
           'A non-null String must be provided to a Text widget.',
@@ -58,6 +59,7 @@ class TipColorText extends StatefulWidget {
   final TextWidthBasis textWidthBasis;
 
   final Function() onTap;
+  final Function(String) formatter;
 }
 
 class _TipColorTextState extends State<TipColorText> {
@@ -76,7 +78,6 @@ class _TipColorTextState extends State<TipColorText> {
 
   List<TextSpan> _buildTextSpans(String data, Function() cb) {
     List<TextItem> texts = parse(data);
-    int i = 0;
     return texts.map((item) => _buildTextSpan(item, cb)).toList();
   }
 
@@ -97,7 +98,7 @@ class _TipColorTextState extends State<TipColorText> {
 
   TextSpan _buildTextSpan(TextItem textItem, Function() cb) {
     return TextSpan(
-        text: textItem.content,
+        text: widget.formatter!=null?widget.formatter(textItem.content):textItem.content,
         style: widget.style.copyWith(color: textItem.color),
         // 设置点击事件
         recognizer: TapGestureRecognizer()
